@@ -1,0 +1,36 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: host-based-ingress
+  annotations: 
+  # used certmanager with letencrypt to request certificates 
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+spec:
+  ingressClassName: traefik
+  # cerficate is for below domain name 
+  tls: 
+    - hosts:
+        - nginx-k8s-demo.anajak-khmer.site
+        - react-k8s-demo.anajak-khmer.site
+      secretName: nginx-k8s-demo-secret 
+  rules:
+  - host: react-k8s-demo.anajak-khmer.site
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: react-svc
+            port: 
+              number: 80
+  - host: nginx-k8s-demo.anajak-khmer.site
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: nginx-svc
+            port: 
+              number: 80

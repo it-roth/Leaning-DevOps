@@ -1,0 +1,11 @@
+nfs_server: 
+  ip:  "{{ hostvars['localhost']['private_ip'] }}"
+  mount_path: /srv/nfs_shared
+nfs_client:
+  mount_path: /mnt/nfs_shared
+  
+  ips: 
+    - "{{ hostvars['master02']['private_ip'] }}"
+    - "{{ hostvars['master03']['private_ip'] }}"
+    - "{{ hostvars['worker01']['private_ip'] }}"
+    - "{{ hostvars['worker02']['private_ip'] }}"

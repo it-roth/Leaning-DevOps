@@ -1,0 +1,11 @@
+galaxy_info:
+  author: keoKAY 
+  description: Anisble role for SETUP NFS and client 
+  min_ansible_version: "2.9"
+  license: MIT
+  platforms:
+    - name: Ubuntu 
+      versions: 
+        - jammy 
+      
+dependencies: []

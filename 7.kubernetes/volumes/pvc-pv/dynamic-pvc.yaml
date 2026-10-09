@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: spring-nfs-pvc-2
+spec:
+# kubectl get sc | storageclass 
+  storageClassName: nfs-client
+  resources:
+    requests:
+      storage: 10Gi
+  accessModes:
+    - ReadWriteMany

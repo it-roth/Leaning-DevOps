@@ -1,0 +1,13 @@
+services:
+  nexus:
+    image: sonatype/nexus3
+    container_name: nexus
+    #user: root
+    restart: always
+    ports:
+      - "8081:8081" # FOR UI 
+      - "5000:5000" # DOCKER REG
+    volumes:
+      - nexus-vol:/nexus-data
+volumes:
+  nexus-vol: 

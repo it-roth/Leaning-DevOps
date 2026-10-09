@@ -1,0 +1,72 @@
+- name: Create GCP Worker Instances  
+  hosts: localhost
+  become: true 
+  vars_files:
+    - ../vars/machine-info.yaml 
+  tasks: 
+  - name: Slurp the local public key
+    slurp: 
+      src: "{{ ssh_public_key }}" 
+    register: ssh_pub_key
+  - name: Install Python packages via apt
+    when: false 
+    apt:
+      name:
+        - python3-requests
+        - python3-google-auth
+      state: present
+      update_cache: yes
+
+  - name: Create GCP worker instance
+    google.cloud.gcp_compute_instance:
+      name: "{{ item.name}}"
+      machine_type: "{{item.machine_type}}"
+      zone: "{{item.zone}}"
+      project: "{{google_project_id}}"
+      auth_kind: application
+      state: present # create machine 
+      metadata:
+        ssh-keys: "kk:{{ ssh_pub_key['content'] | b64decode }}"
+        startup-script: |
+          #!/bin/bash 
+          sudo apt-get update && sudo apt-get upgrade -y 
+          sudo apt-get install fish -y
+      disks:
+        - auto_delete: true
+          boot: true
+          initialize_params:
+            source_image: "{{item.image}}"
+            disk_size_gb: "{{item.disk_size}}"
+            disk_type: "{{item.disk_type}}"
+      network_interfaces:
+        - network:
+            selfLink: "projects/{{google_project_id}}/global/networks/default"
+          access_configs:
+            - name: External NAT
+              type: ONE_TO_ONE_NAT
+      tags:
+        items:
+          - http-server
+          - https-server
+    register: gcp_worker_instances
+    when: item.name not in ["master02", "master03"]
+    environment: 
+        GOOGLE_APPLICATION_CREDENTIALS: "{{ adc_path }}"
+        GOOGLE_EXTERNAL_ACCOUNT_ALLOW_EXECUTABLES: "1"
+    loop: "{{ machines_info }}"
+  # used for debug 
+  - name: Write gcp_instance into json file
+    copy:
+      content: "{{ gcp_worker_instances }}"
+      dest: "./gcp_worker_instances.json"
+    when: true 
+  - name: Slurp existing inventory content 
+    slurp: 
+      src: "../inventory.ini"
+    register: existing_inventory_content
+  - name: Update Worker Inventory using jinjar 
+    template: 
+      src: ../templates/worker-template.j2
+      dest: ../inventory.ini
+    vars: 
+      existing_content: "{{ existing_inventory_content['content'] | b64decode }}"

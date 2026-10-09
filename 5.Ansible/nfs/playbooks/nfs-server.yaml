@@ -1,0 +1,10 @@
+- name: NFS Server playbook 
+  hosts: master01 # nfs-server 
+  become: true 
+
+  tasks:
+    - name: Running common tasks 
+      import_tasks: ../tasks/common-task.yaml
+    - name: Setup NFS Server
+      when: true  
+      import_tasks: ../tasks/nfs-server-task.yaml 

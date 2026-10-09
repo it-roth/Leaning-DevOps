@@ -1,0 +1,26 @@
+- name: Testing Playboook 
+  hosts: nfs-clients
+  become: true 
+  tasks: 
+    # sudo apt update && sudo apt ugprade 
+    - name: Show all control plane private IPs
+      ansible.builtin.debug:
+        msg: "{{ hostvars[item]['ansible_default_ipv4']['address'] }}"
+      loop: "{{ groups['nfs-clients'] }}"
+
+
+    - name: Debug the variables 
+      debug: 
+        msg: "NFS Server IP is : {{nfs_server.ip}}"
+    - name: Update Packages 
+      when: false 
+      apt: 
+        update_cache: true
+    - name: Install packages 
+      when: false 
+      apt: 
+        name: 
+          - nginx
+          - tree 
+          #- neofetch  
+        state: present # absent(remove)

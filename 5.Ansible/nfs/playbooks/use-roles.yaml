@@ -1,0 +1,10 @@
+- name: Playbook that uses roles 
+  hosts: node1 
+  roles:
+    - ansible-nfs-role-itp
+    - nginx 
+    - common 
+  tasks:  
+    - name: ANother tasks 
+      debug: 
+        msg: "Addtional tasks beside just role "

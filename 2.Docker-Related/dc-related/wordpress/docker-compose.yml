@@ -1,0 +1,47 @@
+services: 
+  mysql-svc: 
+    image: mysql:latest
+    container_name: mysql-cont 
+    # ports:
+    #   - 3306
+    #   - :3306
+    environment:
+    # if the value of the key such as DB_PASS,DB_USER,... doens't exist 
+    # we will use the defualt value on the right side 
+    - MYSQL_ROOT_PASSWORD=${DB_PASS:-defaultpass}
+    - MYSQL_USER=${DB_USER:-defaultuser}
+    - MYSQL_PASSWORD=${DB_PASS:-defaultpass}
+    - MYSQL_DATABASE=${DB_NAME:-defaultname}
+    volumes:
+      - mysql-vol:/var/lib/mysql
+    networks:
+      - wordpressnet
+  wordpress-svc: 
+    image: wordpress:latest 
+    container_name: wordpres-cont 
+    ports:
+      - 3005:80 
+    environment:
+    # feature of the custom bridge network 
+
+      - WORDPRESS_DB_HOST=mysql-cont
+      - WORDPRESS_DB_USER=${DB_USER}
+      - WORDPRESS_DB_PASSWORD=${DB_PASS}
+      - WORDPRESS_DB_NAME=${DB_NAME}
+    volumes:
+      - wordpress-vol:/var/www/html
+    networks:
+      - wordpressnet
+
+
+networks:
+  # brigde network 
+  # auto create the network 
+  wordpressnet: 
+    name: wordpressnet 
+    driver: bridge
+    # use the existing network 
+    external: true  
+volumes: 
+  mysql-vol: 
+  wordpress-vol: 

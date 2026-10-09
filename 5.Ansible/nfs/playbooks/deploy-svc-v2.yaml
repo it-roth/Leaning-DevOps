@@ -1,0 +1,23 @@
+- name: Deploy using docker compose module 
+  hosts: node2 
+  vars: 
+    docker_image: "69966/springgradleimg:1.1.1"
+    storage_path: "/mnt/nfs_shared/images"
+    container_path: "/app/src/main/resources/images"
+  
+
+  tasks: 
+    - name: Up container with compose module 
+      community.docker.docker_compose_v2:
+        project_name: docker_module
+        state: present 
+        definition: 
+          services: 
+            spring-svc: 
+              image: "{{docker_image}}"
+              container_name: "spring-container2"
+              volumes: 
+                - "{{storage_path}}:{{container_path}}"
+              ports: 
+               - "8081:8080"
+              restart: always 

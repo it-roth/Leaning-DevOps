@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-configmap
+data:
+  index.html: |
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Nnginx Custom Page </title>
+    </head>
+    <body>
+        <h1> Customized Nginx </h1>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempore esse error, architecto laborum qui perferendis, tempora sint quis quasi excepturi officia cumque nisi, tenetur provident adipisci. Quia, dicta. Nisi, tempore?</p>    
+    </body>
+    </html>

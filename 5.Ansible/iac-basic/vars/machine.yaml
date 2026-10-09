@@ -1,0 +1,5 @@
+google_project_id: project-76d70acd-06f2-447f-954
+user: kk 
+adc_path: "/home/kk/.config/gcloud/application_default_credentials.json"
+ssh_public_key: /home/kk/.ssh/id_ed25519.pub
+machine_name: demo-iac-machine

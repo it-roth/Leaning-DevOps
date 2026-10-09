@@ -1,0 +1,8 @@
+services:
+  spring-svc: 
+    container_name: spring-cont 
+    image: 69966/springgradleimg:1.1.1
+    ports: 
+      - "8080:8080"
+    volumes:
+      - "/mnt/nfs_shared/images:/app/src/main/resources/images"

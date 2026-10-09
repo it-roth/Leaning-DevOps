@@ -1,0 +1,16 @@
+# the one qwho request certs from letsencrypt
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-stag
+spec:
+  acme:
+    email: lyvanna544@gmail.com  
+   # server: https://acme-v02.api.letsencrypt.org/directory
+    server: https://acme-staging-v02.api.letsencrypt.org/directory
+    privateKeySecretRef:
+      name: letsencrypt-stag
+    solvers:
+      - http01:
+          ingress:
+            ingressClassName: traefik

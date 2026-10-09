@@ -1,0 +1,36 @@
+- name: Delete All GCP Instance 
+  hosts: localhost
+  become: true 
+  vars_files:
+    - ../vars/machine-info.yaml 
+  tasks: 
+  - name: Delete GCP instance
+    google.cloud.gcp_compute_instance:
+      name: "{{ item.name}}"
+      machine_type: "{{item.machine_type}}"
+      zone: "{{item.zone}}"
+      project: "{{google_project_id}}"
+      auth_kind: application
+      state: absent 
+      disks:
+        - auto_delete: true
+          boot: true
+          initialize_params:
+            source_image: "{{item.image}}"
+            disk_size_gb: "{{item.disk_size}}"
+            disk_type: "{{item.disk_type}}"
+      network_interfaces:
+        - network:
+            selfLink: "projects/{{google_project_id}}/global/networks/default"
+          access_configs:
+            - name: External NAT
+              type: ONE_TO_ONE_NAT
+      tags:
+        items:
+          - http-server
+          - https-server
+    # when: item.name not in ["master02", "master03"]
+    environment: 
+        GOOGLE_APPLICATION_CREDENTIALS: "{{ adc_path }}"
+        GOOGLE_EXTERNAL_ACCOUNT_ALLOW_EXECUTABLES: "1"
+    loop: "{{ machines_info }}"

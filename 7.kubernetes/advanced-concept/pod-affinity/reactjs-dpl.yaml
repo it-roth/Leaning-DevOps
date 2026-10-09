@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reactjs-dpl
+spec:
+  replicas:  4 
+  selector:
+    matchLabels:
+      app: reactjs-app
+  template:
+    metadata:
+      labels:
+        app: reactjs-app
+    spec:
+      affinity: 
+        podAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector: 
+                  matchExpressions:
+                    - key: app
+                      operator: In
+                      values: 
+                        - nginx-app 
+                topologyKey: kubernetes.io/hostname 
+              weight: 60
+      containers:
+      - name: reactjs-app
+        image: nginx:latest 
+        ports:
+        - containerPort: 80

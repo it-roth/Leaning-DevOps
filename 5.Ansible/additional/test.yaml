@@ -1,0 +1,8 @@
+- name: Testing Vault 
+  hosts: local 
+  vars_files:
+    - database-secret.yaml
+  tasks: 
+    - name: Reading the database credential 
+      debug: 
+        msg: " Database User is: {{db_user}} , pass: {{db_pass}}"

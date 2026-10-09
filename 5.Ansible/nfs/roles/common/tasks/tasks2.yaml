@@ -1,0 +1,7 @@
+- name: tasks 2 
+  debug: 
+    msg: " This is the tasks 2 "
+  
+- name: Show the credentials 
+  debug: 
+    msg: "Database User: {{database_user }} and Pass: {{database_pass}}"

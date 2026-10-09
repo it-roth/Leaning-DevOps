@@ -1,0 +1,9 @@
+# kubectl get api-resource 
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: nginx-strip-prefix
+spec:
+  stripPrefix:
+    prefixes:
+      - /nginx

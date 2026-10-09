@@ -1,0 +1,11 @@
+- name: Setup NFS Server
+  include_tasks: setup-nfs-server.yaml 
+  when: nfs_mode == "server"
+  ignore_errors: false  
+  register: nfs_server_result 
+- name: Setup NFS clients 
+  include_tasks: setup-nfs-client.yaml 
+  #when: false 
+  when: 
+    - nfs_mode == "client"
+    - nfs_server_result is succeeded

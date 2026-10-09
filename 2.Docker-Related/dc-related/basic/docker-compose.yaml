@@ -1,0 +1,45 @@
+services: 
+  svc-1: 
+    image: nginx 
+    container_name: container1
+    # ports:
+    #   - 3001:80 
+  svc-2: 
+    image: nginx 
+    container_name: container2 
+    ports:
+      - 3002:80 
+  svc-3: 
+    image: nginx 
+    container_name: container3
+    ports:
+    # 80-> port of the container 
+      - :80  # host port will be allocated automatically 
+    
+
+
+networks:
+  testing-net: 
+volumes:
+  testing-vol: 
+
+# docker compose config 
+# docker compose up -d
+# docker compose down 
+# docker compose ps 
+
+
+
+
+
+
+
+
+
+
+
+#docker-compose.yaml .yml -> default name 
+# docker compose up -d 
+
+# spring-dcoker-compose.yaml 
+# docker compose -f spring-docker-compose.yaml up -d 

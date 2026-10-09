@@ -1,0 +1,10 @@
+- name: Update apt packages 
+  when: false # skip the tasks  
+  apt: 
+    update_cache: true 
+- name: Install common packages  
+  apt: 
+    name: 
+      - fish 
+      - tree 
+    state: present 
